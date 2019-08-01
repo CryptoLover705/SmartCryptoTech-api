@@ -14,14 +14,14 @@ const err = {
   hex: ' must be a hexadecimal string',
   opts: 'opts must be object',
   hex64: ' must be 64-digit hexadecimal string',
-  addr: ' must be 98-character string beginning with ccx',
-  raw: ' must be a raw amount of CCX (X)',
-  trans: ' must be a transfer object { address: 98-character string beginning with ccx, amount: raw amount of CCX (X), message: optional string }',
+  addr: ' must be 34-character string beginning with a `s` or a `t`',
+  raw: ' must be a raw amount of SCT (X)',
+  trans: ' must be a transfer object { address: 34-character string beginning with a `s` or a `t`, amount: raw amount of SCT (X), message: optional string }',
   arr: ' must be an array',
   str: ' must be a string'
 }
 
-function CCX(host, walletRpcPort, daemonRpcPort, timeout) {
+function SCT(host, walletRpcPort, daemonRpcPort, timeout) {
   if (!host) throw 'host required'
   const parse = host.match(/^([^:]*):\/\/(.*)$/)
   if (parse[1] === 'http') this.protocol = http
@@ -39,25 +39,25 @@ function wrpc(that, method, params, resolve, reject) {
   request(that.protocol, that.host, that.walletRpcPort, that.timeout, buildRpc(method, params), '/json_rpc', resolve, reject)
 }
 
-CCX.prototype.outputs = function () {
+SCT.prototype.outputs = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'get_outputs', {}, resolve, reject)
   })
 }
 
-CCX.prototype.height = function () {
+SCT.prototype.height = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'get_height', {}, resolve, reject)
   })
 }
 
-CCX.prototype.balance = function () {
+SCT.prototype.balance = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'getbalance', {}, resolve, reject)
   })
 }
 
-CCX.prototype.messages = function (opts) {
+SCT.prototype.messages = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) opts = {}
     else if (!isUndefined(opts.firstTxId) && !isNonNegative(opts.firstTxId)) reject('firstTxId' + err.nonNeg)
@@ -72,38 +72,38 @@ CCX.prototype.messages = function (opts) {
   })
 }
 
-CCX.prototype.payments = function (paymentId) { // incoming payments
+SCT.prototype.payments = function (paymentId) { // incoming payments
   return new Promise((resolve, reject) => {
     if (!isHex64String(paymentId)) reject('paymentId' + err.hex64)
     else wrpc(this, 'get_payments', { payment_id: paymentId }, resolve, reject)
   })
 }
 
-CCX.prototype.transfers = function () {
+SCT.prototype.transfers = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'get_transfers', {}, resolve, reject)
   })
 }
 
-CCX.prototype.store = function () {
+SCT.prototype.store = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'store', {}, resolve, reject)
   })
 }
 
-CCX.prototype.reset = function () {
+SCT.prototype.reset = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'reset', {}, resolve, reject)
   })
 }
 
-CCX.prototype.optimize = function () {
+SCT.prototype.optimize = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'optimize', {}, resolve, reject)
   })
 }
 
-CCX.prototype.send = function (opts) {
+SCT.prototype.send = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (isUndefined(opts.transfers) || !arrayTest(opts.transfers, isTransfer)) reject('transfers' + err.arr + ' of transfers each of which' + err.trans)
@@ -140,59 +140,59 @@ CCX.prototype.send = function (opts) {
 
 // Wallet RPC -- walletd
 
-CCX.prototype.resetOrReplace = function (viewSecretKey) {
+SCT.prototype.resetOrReplace = function (viewSecretKey) {
   return new Promise((resolve, reject) => {
     if (!isUndefined(viewSecretKey) && !isHex64String(viewSecretKey)) reject('viewSecretKey' + err.hex64)
     else wrpc(this, 'reset', { viewSecretKey: viewSecretKey }, resolve, reject)
   })
 }
 
-CCX.prototype.status = function () {
+SCT.prototype.status = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'getStatus', {}, resolve, reject)
   })
 }
 
-CCX.prototype.getBalance = function (address) {
+SCT.prototype.getBalance = function (address) {
   return new Promise((resolve, reject) => {
     if (isUndefined(address) || !isAddress(address)) reject('address' + err.addr)
     else wrpc(this, 'getBalance', { address: address }, resolve, reject)
   })
 }
 
-CCX.prototype.createAddress = function () {
+SCT.prototype.createAddress = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'createAddress', {}, resolve, reject)
   })
 }
 
-CCX.prototype.deleteAddress = function (address) {
+SCT.prototype.deleteAddress = function (address) {
   return new Promise((resolve, reject) => {
     if (isUndefined(address) || !isAddress(address)) reject('address' + err.addr)
     wrpc(this, 'deleteAddress', { address: address }, resolve, reject)
   })
 }
 
-CCX.prototype.getAddresses = function () {
+SCT.prototype.getAddresses = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'getAddresses', {}, resolve, reject)
   })
 }
 
-CCX.prototype.getViewSecretKey = function () {
+SCT.prototype.getViewSecretKey = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'getViewKey', {}, resolve, reject)
   })
 }
 
-CCX.prototype.getSpendKeys = function (address) {
+SCT.prototype.getSpendKeys = function (address) {
   return new Promise((resolve, reject) => {
     if (isUndefined(address) || !isAddress(address)) reject('address' + err.addr)
     else wrpc(this, 'getSpendKeys', { address: address }, resolve, reject)
   })
 }
 
-CCX.prototype.getBlockHashes = function (firstBlockIndex, blockCount) {
+SCT.prototype.getBlockHashes = function (firstBlockIndex, blockCount) {
   return new Promise((resolve, reject) => {
     if (isUndefined(firstBlockIndex) || !isNonNegative(firstBlockIndex)) reject('firstBlockIndex' + err.nonNeg)
     else if (isUndefined(blockCount) || !isNonNegative(blockCount)) reject('blockCount' + err.nonNeg)
@@ -200,21 +200,21 @@ CCX.prototype.getBlockHashes = function (firstBlockIndex, blockCount) {
   })
 }
 
-CCX.prototype.getTransaction = function (hash) {
+SCT.prototype.getTransaction = function (hash) {
   return new Promise((resolve, reject) => {
     if (!isHex64String(hash)) reject('hash' + err.hex64)
     else wrpc(this, 'getTransaction', { transactionHash: hash }, resolve, reject)
   })
 }
 
-CCX.prototype.getUnconfirmedTransactionHashes = function (addresses) {
+SCT.prototype.getUnconfirmedTransactionHashes = function (addresses) {
   return new Promise((resolve, reject) => {
     if (!isUndefined(addresses) && !arrayTest(addresses, isAddress)) reject('addresses' + err.arr + ' of addresses each of which' + err.addr)
     else wrpc(this, 'getUnconfirmedTransactionHashes', { addresses: addresses }, resolve, reject)
   })
 }
 
-CCX.prototype.getTransactionHashes = function (opts) {
+SCT.prototype.getTransactionHashes = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (!isNonNegative(opts.blockCount)) reject('blockCount' + err.nonNeg)
@@ -227,7 +227,7 @@ CCX.prototype.getTransactionHashes = function (opts) {
   })
 }
 
-CCX.prototype.getTransactions = function (opts) {
+SCT.prototype.getTransactions = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (!isNonNegative(opts.blockCount)) reject('blockCount' + err.nonNeg)
@@ -240,7 +240,7 @@ CCX.prototype.getTransactions = function (opts) {
   })
 }
 
-CCX.prototype.sendTransaction = function (opts) {
+SCT.prototype.sendTransaction = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (isUndefined(opts.transfers) || !arrayTest(opts.transfers, isTransfer)) reject('transfers' + err.arr + ' of transfers each of which' + err.trans)
@@ -272,7 +272,7 @@ CCX.prototype.sendTransaction = function (opts) {
   })
 }
 
-CCX.prototype.createDelayedTransaction = function (opts) {
+SCT.prototype.createDelayedTransaction = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (isUndefined(opts.transfers) || !arrayTest(opts.transfers, isTransfer)) reject('transfers' + err.arr + ' of transfers each of which' + err.trans)
@@ -298,27 +298,27 @@ CCX.prototype.createDelayedTransaction = function (opts) {
   })
 }
 
-CCX.prototype.getDelayedTransactionHashes = function () {
+SCT.prototype.getDelayedTransactionHashes = function () {
   return new Promise((resolve, reject) => {
     wrpc(this, 'getDelayedTransactionHashes', {}, resolve, reject)
   })
 }
 
-CCX.prototype.deleteDelayedTransaction = function (hash) {
+SCT.prototype.deleteDelayedTransaction = function (hash) {
   return new Promise((resolve, reject) => {
     if (!isHex64String(hash)) reject('hash' + err.hex64)
     else wrpc(this, 'deleteDelayedTransaction', { transactionHash: hash }, resolve, reject)
   })
 }
 
-CCX.prototype.sendDelayedTransaction = function (hash) {
+SCT.prototype.sendDelayedTransaction = function (hash) {
   return new Promise((resolve, reject) => {
     if (!isHex64String(hash)) reject('hash' + err.hex64)
     else wrpc(this, 'sendDelayedTransaction', { transactionHash: hash }, resolve, reject)
   })
 }
 
-CCX.prototype.getMessagesFromExtra = function (extra) {
+SCT.prototype.getMessagesFromExtra = function (extra) {
   return new Promise((resolve, reject) => {
     if (!isHexString(extra)) reject('extra' + err.hex)
     else wrpc(this, 'getMessagesFromExtra', { extra: extra }, resolve, reject)
@@ -331,73 +331,73 @@ function drpc(that, method, params, resolve, reject) {
   request(that.protocol, that.host, that.daemonRpcPort, that.timeout, buildRpc(method, params), '/json_rpc', resolve, reject)
 }
 
-CCX.prototype.count = function () {
+SCT.prototype.count = function () {
   return new Promise((resolve, reject) => {
     drpc(this, 'getblockcount', {}, resolve, reject)
   })
 }
 
-CCX.prototype.blockHashByHeight = function (height) {
+SCT.prototype.blockHashByHeight = function (height) {
   return new Promise((resolve, reject) => {
     if (!isNonNegative(height)) reject('height' + err.nonNeg)
     else drpc(this, 'on_getblockhash', [height], resolve, reject)
   })
 }
 
-CCX.prototype.blockHeaderByHash = function (hash) {
+SCT.prototype.blockHeaderByHash = function (hash) {
   return new Promise((resolve, reject) => {
     if (!isHex64String(hash)) reject('hash' + err.hex64)
     else drpc(this, 'getblockheaderbyhash', { hash: hash }, resolve, reject)
   })
 }
 
-CCX.prototype.blockHeaderByHeight = function (height) {
+SCT.prototype.blockHeaderByHeight = function (height) {
   return new Promise((resolve, reject) => {
     if (!isNonNegative(height)) reject('height' + err.nonNeg)
     else drpc(this, 'getblockheaderbyheight', { height: height }, resolve, reject)
   })
 }
 
-CCX.prototype.lastBlockHeader = function () {
+SCT.prototype.lastBlockHeader = function () {
   return new Promise((resolve, reject) => {
     drpc(this, 'getlastblockheader', {}, resolve, reject)
   })
 }
 
-CCX.prototype.block = function (hash) {
+SCT.prototype.block = function (hash) {
   return new Promise((resolve, reject) => {
     if (!isHex64String(hash)) reject('hash' + err.hex64)
     else drpc(this, 'f_block_json', { hash: hash }, resolve, reject)
   })
 }
 
-CCX.prototype.blocks = function (height) {
+SCT.prototype.blocks = function (height) {
   return new Promise((resolve, reject) => {
     if (!isNonNegative(height)) reject('height' + err.nonNeg)
     else drpc(this, 'f_blocks_list_json', { height: height }, resolve, reject)
   })
 }
 
-CCX.prototype.transaction = function (hash) {
+SCT.prototype.transaction = function (hash) {
   return new Promise((resolve, reject) => {
     if (!isHex64String(hash)) reject('hash' + err.hex64)
     else drpc(this, 'f_transaction_json', { hash: hash }, resolve, reject)
   })
 }
 
-CCX.prototype.transactionPool = function () {
+SCT.prototype.transactionPool = function () {
   return new Promise((resolve, reject) => {
     drpc(this, 'f_on_transactions_pool_json', {}, resolve, reject)
   })
 }
 
-CCX.prototype.currencyId = function () {
+SCT.prototype.currencyId = function () {
   return new Promise((resolve, reject) => {
     drpc(this, 'getcurrencyid', {}, resolve, reject)
   })
 }
 
-CCX.prototype.blockTemplate = function (opts) {
+SCT.prototype.blockTemplate = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (!isAddress(opts.address)) reject('address' + err.addr)
@@ -406,7 +406,7 @@ CCX.prototype.blockTemplate = function (opts) {
   })
 }
 
-CCX.prototype.submitBlock = function (block) {
+SCT.prototype.submitBlock = function (block) {
   return new Promise((resolve, reject) => {
     if (!isHexString(block)) reject('block' + err.hex)
     else drpc(this, 'submitblock', [block], resolve, reject)
@@ -419,19 +419,19 @@ function hrpc(that, params, path, resolve, reject) {
   request(that.protocol, that.host, that.daemonRpcPort, that.timeout, JSON.stringify(params), path, resolve, reject)
 }
 
-CCX.prototype.info = function () {
+SCT.prototype.info = function () {
   return new Promise((resolve, reject) => {
     hrpc(this, {}, '/getinfo', resolve, reject)
   })
 }
 
-CCX.prototype.index = function () {
+SCT.prototype.index = function () {
   return new Promise((resolve, reject) => {
     hrpc(this, {}, '/getheight', resolve, reject)
   })
 }
 /*
-CCX.prototype.startMining = function (opts) {
+SCT.prototype.startMining = function (opts) {
   return new Promise((resolve, reject) => {
     if (!isObject(opts)) reject(err.opts)
     else if (!isAddress(opts.address)) reject('address' + err.addr)
@@ -440,20 +440,20 @@ CCX.prototype.startMining = function (opts) {
   })
 }
 
-CCX.prototype.stopMining = function () {
+SCT.prototype.stopMining = function () {
   return new Promise((resolve, reject) => {
     hrpc(this, { }, '/stop_mining', resolve, reject)
   })
 }
 */
-CCX.prototype.transactions = function (txs) {
+SCT.prototype.transactions = function (txs) {
   return new Promise((resolve, reject) => {
     if (!arrayTest(txs, isHex64String)) reject('txs' + err.arr + ' of transactions each of which ' + err.hex64)
     else hrpc(this, { txs_hashes: txs }, '/gettransactions', resolve, reject)
   })
 }
 
-CCX.prototype.sendRawTransaction = function (rawTx) {
+SCT.prototype.sendRawTransaction = function (rawTx) {
   return new Promise((resolve, reject) => {
     if (!isHexString(rawTx)) reject('rawTx' + err.hex)
     else hrpc(this, { tx_as_hex: rawTx }, '/sendrawtransaction', resolve, reject)
