@@ -1,5 +1,5 @@
 {
-  "name": "conceal-api",
+  "name": "SmartCryptoTech-api",
   "version": "0.7.5",
   "description": "CJSI: Conceal Javascript Interface - RPC/API",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ConcealNetwork/conceal-api.git"
+    "url": "git+https://github.com/smartcryptotech/SmartCryptoTech-api.git"
   },
   "keywords": [
     "conceal",
@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ConcealNetwork/conceal-api/issues"
+    "url": "https://github.com/smartcryptotech/SmartCryptoTech-api/issues"
   },
-  "homepage": "https://github.com/ConcealNetwork/conceal-api#readme"
+  "homepage": "https://github.com/smartcryptotech/SmartCryptoTech-api#readme"
 }
