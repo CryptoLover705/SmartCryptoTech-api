@@ -4,10 +4,10 @@ Javascript/Node.js interface to SmartCryptoTech cryptocurrency RPC/API.
 There are three RPC servers built in to the three programs *smartcryptotechd*, *smartcryptotechwallet* and *walletd*.
 They can each be started with the argument `--help` to display command line options.
 
-### conceald
+### smartcryptotechd
 A node on the P2P network (daemon) with no wallet functions; console interactive. To launch:
 ```
-$ ./conceald
+$ ./smartcryptotechd
 ```
 The default daemon RPC port is 16000 and the default P2P port is 15000.
 ### walletd
@@ -24,7 +24,7 @@ $ ./concealwallet --rpc-bind-port 3333 --wallet-file my --password PASSWORD
 The wallet functions RPC port is 3333. By default the wallet connects with the daemon on port 16000. It is possible to run several instances simultaneously using different wallets and ports.
 ## Quick start for node.js
 ```
-$ npm install conceal-api
+$ npm install smartcryptotech-api
 $ ./conceald # launch the network daemon
 $ ./concealwallet --rpc-bind-port PORT --wallet-file my --password PASSWORD # launch the simple wallet
 ```
