@@ -1,7 +1,7 @@
 # SmartCryptoTech-API: Javascript/Node.js interface (RPC/API)
 Javascript/Node.js interface to SmartCryptoTech cryptocurrency RPC/API.
 
-There are three RPC servers built in to the three programs *smartcryptotechd*, *smartcryptotechwallet* and *walletd*.
+There are three RPC servers built in to the three programs *smartcryptotechd*, *smartcryptotech-cli* and *walletd*.
 They can each be started with the argument `--help` to display command line options.
 
 ### smartcryptotechd
@@ -9,24 +9,24 @@ A node on the P2P network (daemon) with no wallet functions; console interactive
 ```
 $ ./smartcryptotechd
 ```
-The default daemon RPC port is 16000 and the default P2P port is 15000.
+The default daemon RPC port is 9251 and the default P2P port is 9252.
 ### walletd
 A node on the P2P network (daemon) with wallet functions; console non-interactive. To launch, assuming that your `my.wallet` file is in the current directory:
 ```
 $ ./walletd --container-file my.wallet --container-password PASSWD --local --bind-port 3333
 ```
-The wallet functions RPC port is 3333. The default daemon P2P port is 15000. The default daemon RPC port is 16000. The `--local` option activates the daemon; otherwise, a remote daemon can be used.
-### concealwallet
-A simple wallet; console interactive unless RPC server is running; requires access to a node daemon for full functionality. To launch, assuming that your `my.wallet` file is in the current directory:
+The wallet functions RPC port is 3333. The default daemon P2P port is 9252. The default daemon RPC port is 9251. The `--local` option activates the daemon; otherwise, a remote daemon can be used.
+### smartcryptotechwallet
+A simple wallet; console interactive unless RPC server is running; requires access to a node daemon for full functionality. To launch, assuming that your `wallet` file is in the current directory:
 ```
-$ ./concealwallet --rpc-bind-port 3333 --wallet-file my --password PASSWORD
+$ ./smartcryptotechwallet --rpc-bind-port 3333 --wallet-file my --password PASSWORD
 ```
 The wallet functions RPC port is 3333. By default the wallet connects with the daemon on port 16000. It is possible to run several instances simultaneously using different wallets and ports.
 ## Quick start for node.js
 ```
-$ npm install smartcryptotech-api
-$ ./conceald # launch the network daemon
-$ ./concealwallet --rpc-bind-port PORT --wallet-file my --password PASSWORD # launch the simple wallet
+$ npm install SmartCryptoTech-api
+$ ./smartcryptotechd # launch the network daemon
+$ ./smartcryptotechwallet --rpc-bind-port PORT --wallet-file my --password PASSWORD # launch the simple wallet
 ```
 Create and run a test program.
 ```
@@ -34,10 +34,10 @@ $ node test.js
 ```
 The test program could contain, for example, a payment via the simple wallet's RPC server
 ```
-const CCX = require('conceal-api')
-const ccx = new CCX('http://localhost', '3333')
+const SCT = require('SmartCrytoTech-api')
+const SCT = new SCT('http://localhost', '3333')
 
-ccx.send([{
+sct.send([{
   address: 'ccx7Xd3NBbBiQNvv7vMLXmGMHyS8AVB6EhWoHo5EbGfR2Ki9pQnRTfEBt3YxYEVqpUCyJgvPjBYHp8N2yZwA7dqb4PjaGWuvs4',
   amount: 1234567
 }])
