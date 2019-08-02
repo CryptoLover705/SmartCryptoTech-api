@@ -38,7 +38,7 @@ const SCT = require('SmartCrytoTech-api')
 const SCT = new SCT('http://localhost', '3333')
 
 sct.send([{
-  address: 'ccx7Xd3NBbBiQNvv7vMLXmGMHyS8AVB6EhWoHo5EbGfR2Ki9pQnRTfEBt3YxYEVqpUCyJgvPjBYHp8N2yZwA7dqb4PjaGWuvs4',
+  address: 'T1nWmmwMSUtkmfuExxhrzZn8uXV1gEJJ8w',
   amount: 1234567
 }])
 .then((res) => { console.log(res) }) // display tx hash upon success
@@ -46,13 +46,13 @@ sct.send([{
 ```
 ## API
 ```
-const CCX = require('conceal-api')
-const ccx = new CCX(host, walletRpcPort, daemonRpcPort, timeout)
+const SCT = require('SmartCryptoTech-api')
+const sct = new SCT(host, walletRpcPort, daemonRpcPort, timeout)
 ```
-ccx.rpc returns a promise, where *rpc* is any of the methods below:
+sct.rpc returns a promise, where *rpc* is any of the methods below:
 
 * [Wallet RPC (must provide walletRpcPort)](#wallet)
-  * concealwallet
+  * smartcryptotechwallet
     * [Get height](#height)
     * [Get balance](#balance)
     * [Get messages](#messages)
@@ -103,110 +103,110 @@ ccx.rpc returns a promise, where *rpc* is any of the methods below:
 
 ### <a name="wallet"></a>Wallet RPC (must provide walletRpcPort)
 
-#### <a name="height"></a>Get height (concealwallet)
+#### <a name="height"></a>Get height (smartcryptotechwallet)
 ```
-ccx.height() // get last block height
+sct.height() // get last block height
 ```
-#### <a name="balance">Get balance (concealwallet)
+#### <a name="balance">Get balance (smartcryptotechwallet)
 ```
-ccx.balance() // get wallet balances
+sct.balance() // get wallet balances
 ```
-#### <a name="messages">Get messages (concealwallet)
+#### <a name="messages">Get messages (smartcryptotechwallet)
 ```
 const opts = {
   firstTxId: FIRST_TX_ID, // (integer, optional), ex: 10
   txLimit: TX_LIMIT // maximum number of messages (integer, optional), ex: 10
 }
-ccx.messages(opts) // opts can be omitted
+sct.messages(opts) // opts can be omitted
 ```
-#### <a name="payments">Get incoming payments (concealwallet)
+#### <a name="payments">Get incoming payments (smartcryptotechwallet)
 ```
 const paymentId = PAYMENT_ID // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.payments(paymentId)
+sct.payments(paymentId)
 ```
-#### <a name="transfers">Get transfers (concealwallet)
+#### <a name="transfers">Get transfers (smartcryptotechwallet)
 ```
-ccx.transfers() // gets all transfers
+sct.transfers() // gets all transfers
 ```
-#### <a name="outputs">Get number of unlocked outputs (concealwallet)
+#### <a name="outputs">Get number of unlocked outputs (smartcryptotechwallet)
 ```
-ccx.outputs() // gets outputs available as inputs for a new transaction
+sct.outputs() // gets outputs available as inputs for a new transaction
 ```
-#### <a name="reset">Reset wallet (concealwallet)
+#### <a name="reset">Reset wallet (smartcryptotechwallet)
 ```
-ccx.reset() // discard wallet cache and resync with block chain
+sct.reset() // discard wallet cache and resync with block chain
 ```
-#### <a name="store">Store wallet (concealwallet)
+#### <a name="store">Store wallet (smartcryptotechwallet)
 ```
-ccx.store() // save wallet cache to disk
+sct.store() // save wallet cache to disk
 ```
-#### <a name="optimize">Optimize wallet (concealwallet)
+#### <a name="optimize">Optimize wallet (smartcryptotechwallet)
 ```
-ccx.optimize() // combines many available outputs into a few by sending to self
+sct.optimize() // combines many available outputs into a few by sending to self
 ```
-#### <a name="send">Send transfers (concealwallet)
+#### <a name="send">Send transfers (smartcryptotechwallet)
 ```
-const transfers = [{ address: ADDRESS, amount: AMOUNT, message: MESSAGE }, ...] // ADDRESS = destination address (string, required), AMOUNT = raw CCX (integer, required), MESSAGE = transfer message to be encrypted (string, optional)
+const transfers = [{ address: ADDRESS, amount: AMOUNT, message: MESSAGE }, ...] // ADDRESS = destination address (string, required), AMOUNT = raw SCT (integer, required), MESSAGE = transfer message to be encrypted (string, optional)
 const opts = {
-  transfers: transfers, // (array, required), ex: [{ address: 'ccx7Xd...', amount: 1000, message: 'refund' }]
-  fee: FEE, // (raw CCX integer, optional, default is minimum required), ex: 10
+  transfers: transfers, // (array, required), ex: [{ address: 'T1nWmmw...', amount: 1000, message: 'refund' }]
+  fee: FEE, // (raw SCT integer, optional, default is minimum required), ex: 10
   anonimity: MIX_IN, // input mix count (integer, optional, default 2), ex: 6
   paymentId: PAYMENT_ID, // (64-digit hex string, optional), ex: '0ab1...3f4b'
   unlockHeight: UNLOCK_HEIGHT // block height to unlock payment (integer, optional), ex: 12750
 }
-ccx.send(opts)
+sct.send(opts)
 ```
 #### <a name="resetOrReplace">Reset or replace wallet (walletd)
 ```
 const viewSecretKey = VIEW_SECRET_KEY // (64-digit hex string, optional), ex: '0ab1...3f4b'
-ccx.resetOrReplace(viewSecretKey) // If no key, wallet is re-synced. If key, a new address is created from the key for a new wallet.
+sct.resetOrReplace(viewSecretKey) // If no key, wallet is re-synced. If key, a new address is created from the key for a new wallet.
 ```
 #### <a name="status">Get status (walletd)
 ```
-ccx.status()
+sct.status()
 ```
 #### <a name="getBalance">Get balance (walletd)
 ```
-const address = ADDRESS // (string, required), ex: 'ccx7Xd...'
-ccx.getBalance(address)
+const address = ADDRESS // (string, required), ex: 'T1nWmmw...'
+sct.getBalance(address)
 ```
 #### <a name="createAddress">Create address (walletd)
 ```
-ccx.createAddress()
+sct.createAddress()
 ```
 #### <a name="deleteAddress">Delete address (walletd)
 ```
-const address = ADDRESS // (string, required), ex: 'ccx7Xd...'
-ccx.deleteAddress(address)
+const address = ADDRESS // (string, required), ex: 'T1nWmmw...'
+sct.deleteAddress(address)
 ```
 #### <a name="getAddresses">Get addresses (walletd)
 ```
-ccx.getAddresses()
+sct.getAddresses()
 ```
 #### <a name="getViewSecretKey">Get view secret key (walletd)
 ```
-ccx.getViewSecretKey()
+sct.getViewSecretKey()
 ```
 #### <a name="getSpendKeys">Get spend keys (walletd)
 ```
-const address = ADDRESS // (string, required), ex: 'ccx7Xd...'
-ccx.getSpendKeys(address)
+const address = ADDRESS // (string, required), ex: 'T1nWmmw...'
+sct.getSpendKeys(address)
 ```
 #### <a name="getBlockHashes">Get block hashes (walletd)
 ```
 const firstBlockIndex = FIRST_BLOCK_INDEX // index of first block (integer, required), ex: 12750
 const blockCount = BLOCK_COUNT // number of blocks to include (integer, required), ex: 30
-ccx.getBlockHashes(firstBlockIndex, blockCount)
+sct.getBlockHashes(firstBlockIndex, blockCount)
 ```
 #### <a name="getTransaction">Get transaction (walletd)
 ```
 const hash = HASH // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.getTransaction(hash) // get transaction details given hash
+sct.getTransaction(hash) // get transaction details given hash
 ```
 #### <a name="getUnconfirmedTransactions">Get unconfirmed transactions (walletd)
 ```
 const addresses = [ADDRESS1, ADDRESS2, ...] // ADDRESS = address string; address to include
-ccx.getUnconfirmedTransactions(addresses) // addresses can be omitted
+sct.getUnconfirmedTransactions(addresses) // addresses can be omitted
 ```
 #### <a name="getTransactionHashes">Get transactionHashes (walletd)
 ```
@@ -214,10 +214,10 @@ const opts = { // either blockHash or firstBlockIndex is required
   blockHash: BLOCK_HASH, // hash of first block (64-digit hex string, see comment above), ex: '0ab1...3f4b'
   firstBlockIndex: FIRST_BLOCK_INDEX, // index of first block (integer, see comment above), ex: 12750
   blockCount: BLOCK_COUNT, // number of blocks to include (integer, required), ex: 30
-  addresses: [ADDRESS, ...], filter (array of address strings, optional), ex: ['ccx7Xd...']
+  addresses: [ADDRESS, ...], filter (array of address strings, optional), ex: ['T1nWmmw...']
   paymentId: PAYMENT_ID // filter (64-digit hex string, optional), ex: '0ab1...3f4b'
 }
-ccx.getTransactionHashes(opts)
+sct.getTransactionHashes(opts)
 ```
 #### <a name="getTransactions">Get transactions (walletd)
 ```
@@ -225,140 +225,140 @@ const opts = { // either blockHash or firstBlockIndex is required
   blockHash: BLOCK_HASH, // hash of first block (64-digit hex string, see comment above), ex: '0ab1...3f4b'
   firstBlockIndex: FIRST_BLOCK_INDEX, // index of first block (integer, see comment above), ex: 12750
   blockCount: BLOCK_COUNT, // number of blocks to include (integer, required), ex: 30
-  addresses: [ADDRESS, ...], filter (array of address strings, optional), ex: ['ccx7Xd...']
+  addresses: [ADDRESS, ...], filter (array of address strings, optional), ex: ['T1nWmmw...']
   paymentId: PAYMENT_ID // filter (64-digit hex string, optional), ex: '0ab1...3f4b'
 }
-ccx.getTransactions(opts)
+sct.getTransactions(opts)
 ```
 #### <a name="sendTransaction">Send transaction (walletd)
 ```
-const transfers = [{ address: ADDRESS, amount: AMOUNT, message: MESSAGE }, ...] // ADDRESS = destination address (string, required), AMOUNT = raw CCX (integer, required), MESSAGE = transfer message to be encrypted (string, optional)
+const transfers = [{ address: ADDRESS, amount: AMOUNT, message: MESSAGE }, ...] // ADDRESS = destination address (string, required), AMOUNT = raw SCT (integer, required), MESSAGE = transfer message to be encrypted (string, optional)
 const addresses = [ADDRESS1, ADDRESS2, ...] // ADDRESS = source address string; address in wallet to take funds from
 const opts = {
-  transfers: transfers, // (array, required), ex: [{ address: 'ccx7Xd...', amount: 1000, message: 'tip' }]
-  addresses: addresses, // (array, optional), ex: ['ccx7Xd...', 'ccx7Xe...']
-  changeAddress: ADDRESS, // change return address (address string, optional if only one address in wallet or only one source address given), ex: 'ccx7Xd...'
+  transfers: transfers, // (array, required), ex: [{ address: 'T1nWmmw...', amount: 1000, message: 'tip' }]
+  addresses: addresses, // (array, optional), ex: ['T1nWmmw...', 'SnmPTb1...']
+  changeAddress: ADDRESS, // change return address (address string, optional if only one address in wallet or only one source address given), ex: 'T1nWmmw...'
   paymentId: PAYMENT_ID, // filter (64-digit hex string, optional), ex: '0ab1...3f4b'
   anonimity: MIX_IN, // input mix count (integer, optional, default 2), ex: 6
-  fee: FEE, // (raw CCX integer, optional, default is minimum required), ex: 10
+  fee: FEE, // (raw SCT integer, optional, default is minimum required), ex: 10
   unlockHeight: UNLOCK_HEIGHT, // block height to unlock payment (integer, optional), ex: 12750
   extra: EXTRA // (variable length string, optional), ex: '123abc'
 }
-ccx.sendTransaction(opts)
+sct.sendTransaction(opts)
 ```
 #### <a name="createDelayedTransaction">Create delayed transaction (walletd)
 ```
 const transfers = [{ address: ADDRESS, amount: AMOUNT, message: MESSAGE }, ...] // ADDRESS = destination address (string, required), AMOUNT = raw CCX (integer, required), MESSAGE = transfer message to be encrypted (string, optional)
 const addresses = [ADDRESS1, ADDRESS2, ...] // ADDRESS = source address string; address in wallet to take funds from
 const opts = {
-  transfers: transfers, // (array, required), ex: [{ address: 'ccx7Xd...', amount: 1000, message: 'tip' }]
-  addresses: addresses, // (array, optional), ex: ['ccx7Xd...', 'ccx7Xe...']
-  changeAddress: ADDRESS, // change return address (address string, optional if only one address in wallet or only one source address given), ex: 'ccx7Xd...'
+  transfers: transfers, // (array, required), ex: [{ address: 'T1nWmmw...', amount: 1000, message: 'tip' }]
+  addresses: addresses, // (array, optional), ex: ['T1nWmmw...', 'SnmPTb1...']
+  changeAddress: ADDRESS, // change return address (address string, optional if only one address in wallet or only one source address given), ex: 'T1nWmmw...'
   paymentId: PAYMENT_ID, // filter (64-digit hex string, optional), ex: '0ab1...3f4b'
   anonimity: MIX_IN, // input mix count (integer, optional, default 2), ex: 6
-  fee: FEE, // (raw CCX integer, optional, default is minimum required), ex: 10
+  fee: FEE, // (raw SCT integer, optional, default is minimum required), ex: 10
   unlockHeight: UNLOCK_HEIGHT, // block height to unlock payment (integer, optional), ex: 12750
   extra: EXTRA // (variable length string, optional), ex: '123abc'
 }
-ccx.createDelayedTransaction(opts) // create but do not send transaction
+sct.createDelayedTransaction(opts) // create but do not send transaction
 ```
 #### <a name="getDelayedTransactionHashes">Get delayed transaction hashes (walletd)
 ```
-ccx.getDelayedTransactionHashes()
+sct.getDelayedTransactionHashes()
 ```
 #### <a name="deleteDelayedTransaction">Delete delayed transaction (walletd)
 ```
 const hash = HASH // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.deleteDelayedTransaction(hash)
+sct.deleteDelayedTransaction(hash)
 ```
 #### <a name="sendDelayedTransaction">Send delayed transaction (walletd)
 ```
 const hash = HASH // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.sendDelayedTransaction(hash)
+sct.sendDelayedTransaction(hash)
 ```
 #### <a name="getMessagesFromExtra">Get incoming messages from transaction extra field (walletd)
 ```
 const extra = EXTRA // (hex string, required), ex: '0199...c3ca'
-ccx.getMessagesFromExtra(extra)
+sct.getMessagesFromExtra(extra)
 ```
 ### <a name="daemon">Daemon RPC (must provide daemonRpcPort)
 
 #### <a name="info">Get info
 ```
-ccx.info() // get information about the block chain, including next block height
+sct.info() // get information about the block chain, including next block height
 ```
 #### <a name="index">Get index
 ```
-ccx.index() // get next block height
+sct.index() // get next block height
 ```
 #### <a name="count">Get count
 ```
-ccx.count() // get next block height
+sct.count() // get next block height
 ```
 #### <a name="currencyId">Get currency ID
 ```
-ccx.currencyId()
+sct.currencyId()
 ```
 #### <a name="blockHashByHeight">Get block hash by height
 ```
 const height = HEIGHT // (integer, required), ex: 12750
-ccx.blockHashByHeight(height) // get block hash given height
+sct.blockHashByHeight(height) // get block hash given height
 ```
 #### <a name="blockHeaderByHeight">Get block header by height
 ```
 const height = HEIGHT // (integer, required), ex: 12750
-ccx.blockHeaderByHeight(height) // get block header given height
+sct.blockHeaderByHeight(height) // get block header given height
 ```
 #### <a name="blockHeaderByHash">Get block header by hash
 ```
 const hash = HASH // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.blockHeaderByHash(hash) // get block header given hash
+sct.blockHeaderByHash(hash) // get block header given hash
 ```
 #### <a name="lastBlockHeader">Get last block header
 ```
-ccx.lastBlockHeader()
+sct.lastBlockHeader()
 ```
 #### <a name="block">Get block
 ```
 const hash = HASH // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.block(hash)
+sct.block(hash)
 ```
 #### <a name="blocks">Get blocks
 ```
 const height = HEIGHT // (integer, required), ex: 12750
-ccx.blocks(height) // returns 31 blocks up to and including HEIGHT
+sct.blocks(height) // returns 31 blocks up to and including HEIGHT
 ```
 #### <a name="blockTemplate">Get block template
 ```
-const address = ADDRESS // destination address (string, required), ex: 'ccx7Xd...'
+const address = ADDRESS // destination address (string, required), ex: 'T1nWmmw...'
 const reserveSize = RESERVE_SIZE // bytes to reserve in block for work, etc. (integer < 256, optional, default 14), ex: 255
 const opts = {
   address: address,
   reserveSize: reserveSize
 }
-ccx.blockTemplate(opts)
+sct.blockTemplate(opts)
 ```
 #### <a name="submitBlock">Submit block
 ```
 const block = BLOCK // block blob (hex string, required), ex: '0300cb9eb...'
-ccx.submitBlock(block)
+sct.submitBlock(block)
 ```
 #### <a name="transaction">Get transaction
 ```
 const hash = HASH // (64-digit hex string, required), ex: '0ab1...3f4b'
-ccx.transaction(hash)
+sct.transaction(hash)
 ```
 #### <a name="transactions">Get transactions
 ```
 const arr = [HASH1, HASH2, ...] // (array of 64-digit hex strings, required), ex: ['0ab1...3f4b']
-ccx.transactions(arr)
+sct.transactions(arr)
 ```
 #### <a name="transactionPool">Get transaction pool
 ```
-ccx.transactionPool()
+sct.transactionPool()
 ```
 #### <a name="sendRawTransaction">Send raw transaction
 ```
 const transaction = TRANSACTION // transaction blob (hex string, required), ex: ''01d86301...'
-ccx.sendRawTransaction(transaction)
+sct.sendRawTransaction(transaction)
 ```
