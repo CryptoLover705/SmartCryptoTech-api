@@ -1,17 +1,17 @@
 {
   "name": "SmartCryptoTech-api",
   "version": "0.7.5",
-  "description": "CJSI: Conceal Javascript Interface - RPC/API",
+  "description": "SJSI: SmartCryptoTech Javascript Interface - RPC/API",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smartcryptotech/SmartCryptoTech-api.git"
+    "url": "git+https://github.com/CryptoLover705/SmartCryptoTech-api.git"
   },
   "keywords": [
-    "conceal",
+    "smartcryptotech",
     "cryptocurrency",
     "rpc",
     "api"
@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/smartcryptotech/SmartCryptoTech-api/issues"
+    "url": "https://github.com/CryptoLover705/SmartCryptoTech-api/issues"
   },
-  "homepage": "https://github.com/smartcryptotech/SmartCryptoTech-api#readme"
+  "homepage": "https://github.com/CryptoLover705/SmartCryptoTech-api#readme"
 }
